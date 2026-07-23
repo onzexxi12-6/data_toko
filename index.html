@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kināyah — Tiga Jenis dalam Ilmu Balaghah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --emerald: #123527;
+    --emerald-deep: #0b241a;
+    --parchment: #f6efdc;
+    --parchment-soft: #fbf7ea;
+    --gold: #b8860b;
+    --gold-light: #d9ac3d;
+    --maroon: #7b2d26;
+    --ink: #2b2620;
+    --ink-soft: #56503f;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background: var(--parchment-soft);
+    color: var(--ink);
+    font-family: 'Lora', serif;
+    line-height: 1.7;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    background: radial-gradient(circle at 20% 20%, #16412f 0%, var(--emerald) 45%, var(--emerald-deep) 100%);
+    color: var(--parchment);
+    padding: 5rem 1.5rem 4.5rem;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(184,134,11,0.06) 0 2px, transparent 2px 24px),
+      repeating-linear-gradient(-45deg, rgba(184,134,11,0.06) 0 2px, transparent 2px 24px);
+    pointer-events:none;
+  }
+  .hero-arabic{
+    position:relative;
+    font-family:'Amiri', serif;
+    font-size: clamp(2.4rem, 7vw, 4rem);
+    color: var(--gold-light);
+    letter-spacing: 2px;
+    direction: rtl;
+  }
+  .hero-eyebrow{
+    position:relative;
+    font-family:'Poppins', sans-serif;
+    font-size:0.72rem;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    color: var(--gold-light);
+    margin-bottom:1rem;
+    opacity:0.9;
+  }
+  .hero h1{
+    position:relative;
+    font-family:'Cormorant Garamond', serif;
+    font-weight:700;
+    font-size: clamp(2.1rem, 5vw, 3.4rem);
+    margin: 0.6rem 0 0.8rem;
+  }
+  .hero p.sub{
+    position:relative;
+    max-width: 560px;
+    margin: 0 auto;
+    color: #d8cfb0;
+    font-size: 1.02rem;
+  }
+
+  .divider{
+    display:flex; align-items:center; justify-content:center; gap:12px;
+    margin: 2.4rem auto 0;
+    max-width: 320px;
+    position:relative;
+  }
+  .divider .line{ flex:1; height:1px; background: linear-gradient(90deg, transparent, var(--gold-light), transparent); }
+  .divider .diamond{
+    width:8px;height:8px; background:var(--gold-light); transform:rotate(45deg);
+  }
+
+  /* ---------- CONTAINER ---------- */
+  .wrap{
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 5rem;
+  }
+
+  .intro{
+    background: var(--parchment);
+    border: 1px solid #e4d9b6;
+    border-radius: 4px;
+    padding: 1.6rem 1.8rem;
+    margin-bottom: 3.5rem;
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+  }
+  .intro strong{ color: var(--emerald); }
+
+  /* ---------- CHAPTER ---------- */
+  .bab{
+    margin-bottom: 4.2rem;
+  }
+  .bab-head{
+    display:flex;
+    align-items:baseline;
+    gap: 1rem;
+    margin-bottom: 1.1rem;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 0.7rem;
+  }
+  .bab-no{
+    font-family:'Amiri', serif;
+    font-size: 1.6rem;
+    color: var(--gold);
+    direction: rtl;
+    flex-shrink:0;
+  }
+  .bab-title-group h2{
+    font-family:'Cormorant Garamond', serif;
+    font-size: 1.85rem;
+    font-weight:700;
+    color: var(--emerald);
+    margin:0;
+  }
+  .bab-title-group .ar{
+    font-family:'Amiri', serif;
+    direction: rtl;
+    font-size: 1.15rem;
+    color: var(--maroon);
+    margin-top: 2px;
+  }
+
+  .def-card{
+    background: var(--parchment);
+    border-left: 3px solid var(--emerald);
+    padding: 1.3rem 1.6rem;
+    border-radius: 2px;
+    margin-bottom: 1.4rem;
+  }
+  .def-card .label{
+    font-family:'Poppins', sans-serif;
+    font-size:0.68rem;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    display:block;
+  }
+  .def-card p{ margin: 0; color: var(--ink); }
+
+  .breakdown{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 0.6rem;
+    margin: 1.2rem 0 1.6rem;
+  }
+  .chip{
+    background: var(--emerald);
+    color: var(--parchment);
+    font-family:'Poppins', sans-serif;
+    font-size: 0.78rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 20px;
+    display:flex;
+    align-items:center;
+    gap: 0.5rem;
+  }
+  .chip .arrow{ color: var(--gold-light); }
+
+  .example{
+    background: var(--emerald-deep);
+    color: var(--parchment);
+    border-radius: 6px;
+    padding: 1.6rem 1.7rem;
+    position: relative;
+    overflow:hidden;
+  }
+  .example::before{
+    content:"مثال";
+    position:absolute;
+    top: -6px; right: 14px;
+    font-family:'Amiri', serif;
+    font-size: 3.6rem;
+    color: rgba(184,134,11,0.12);
+  }
+  .example .ex-label{
+    font-family:'Poppins', sans-serif;
+    font-size:0.68rem;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    color: var(--gold-light);
+    margin-bottom: 0.9rem;
+  }
+  .example .arabic-line{
+    font-family:'Amiri', serif;
+    direction: rtl;
+    font-size: 1.55rem;
+    color: #f6efdc;
+    margin-bottom: 0.5rem;
+    line-height: 1.9;
+  }
+  .example .translit{
+    font-style: italic;
+    color: #cdbf8f;
+    font-size: 0.92rem;
+    margin-bottom: 0.9rem;
+  }
+  .example .meaning{
+    font-family:'Poppins', sans-serif;
+    font-size: 0.85rem;
+    color: var(--gold-light);
+    margin-bottom: 0.7rem;
+  }
+  .example .expl{
+    color: #e5ddc4;
+    font-size: 0.95rem;
+    border-top: 1px solid rgba(184,134,11,0.25);
+    padding-top: 0.8rem;
+    margin-top: 0.4rem;
+  }
+
+  .note{
+    margin-top: 1rem;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    padding-left: 1.6rem;
+    position:relative;
+  }
+  .note::before{
+    content:"✎";
+    position:absolute; left:0; color: var(--gold);
+  }
+
+  /* ---------- COMPARISON TABLE ---------- */
+  .compare{
+    margin-top: 4rem;
+  }
+  .compare h2{
+    font-family:'Cormorant Garamond', serif;
+    font-size: 1.7rem;
+    color: var(--emerald);
+    text-align:center;
+    margin-bottom: 1.6rem;
+  }
+  table{
+    width:100%;
+    border-collapse: collapse;
+    background: var(--parchment);
+    border-radius: 4px;
+    overflow:hidden;
+    font-size: 0.88rem;
+  }
+  thead th{
+    background: var(--emerald);
+    color: var(--parchment);
+    font-family:'Poppins', sans-serif;
+    font-weight:500;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 0.8rem 0.9rem;
+    text-align: left;
+  }
+  tbody td{
+    padding: 0.85rem 0.9rem;
+    border-bottom: 1px solid #e4d9b6;
+    vertical-align: top;
+  }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody td.jenis{ font-weight:600; color: var(--maroon); white-space: nowrap; }
+
+  footer{
+    text-align:center;
+    padding: 2.2rem 1rem 3rem;
+    color: var(--ink-soft);
+    font-family:'Poppins', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 600px){
+    .hero{ padding: 3.5rem 1.2rem 3rem; }
+    .wrap{ padding: 2.5rem 1.1rem 3rem; }
+    table{ font-size: 0.78rem; }
+    thead th, tbody td{ padding: 0.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">Ilmu Balaghah · Bayān</div>
+  <div class="hero-arabic">الكِنَايَة</div>
+  <h1>Kināyah</h1>
+  <p class="sub">Tiga bentuk kināyah — Mauṣūf, Ṣifat, dan Nisbah — lengkap dengan penjabaran unsur dan contohnya.</p>
+  <div class="divider"><span class="line"></span><span class="diamond"></span><span class="line"></span></div>
+</div>
+
+<div class="wrap">
+
+  <div class="intro">
+    <strong>Kināyah</strong> adalah gaya bahasa yang tidak menyebutkan makna secara langsung (ṣarīḥ), melainkan melalui kata yang punya makna lain, namun makna aslinya tetap boleh dimaksudkan. Perbedaan tiga jenis kināyah di bawah terletak pada <strong>bagian mana yang disebutkan</strong> dan <strong>bagian mana yang disembunyikan</strong>: mauṣūf (yang disifati), ṣifat (sifatnya), atau nisbah (penyandarannya).
+  </div>
+
+  <!-- BAB 1 -->
+  <div class="bab">
+    <div class="bab-head">
+      <span class="bab-no">أ</span>
+      <div class="bab-title-group">
+        <h2>Kināyah Mauṣūf</h2>
+        <div class="ar">كِنَايَة عَنِ المَوْصُوف</div>
+      </div>
+    </div>
+
+    <div class="def-card">
+      <span class="label">Definisi</span>
+      <p>Menyebutkan <strong>sifat</strong>, sedangkan yang disifati (<em>mauṣūf</em>) <strong>dibuang</strong> — tidak disebut secara langsung. Meski begitu, makna asli (hakiki) dari kata-kata itu tetap boleh dimaksudkan.</p>
+    </div>
+
+    <div class="breakdown">
+      <span class="chip">Sifat <span class="arrow">→</span> disebutkan</span>
+      <span class="chip">Mauṣūf <span class="arrow">→</span> dibuang / disamarkan</span>
+      <span class="chip">Makna asli <span class="arrow">→</span> tetap boleh</span>
+    </div>
+
+    <div class="example">
+      <div class="ex-label">Contoh</div>
+      <div class="arabic-line">خَالِقُ السَّمَاوَاتِ وَالْأَرْضِ</div>
+      <div class="translit">khāliqu as-samāwāti wal-arḍ</div>
+      <div class="meaning">"Pencipta langit dan bumi"</div>
+      <div class="expl">Di sini yang disebutkan hanyalah <strong>sifat</strong>-Nya, yaitu "Pencipta langit dan bumi", sedangkan <strong>mauṣūf</strong>-nya (yaitu Allah) tidak disebut namanya secara langsung. Sifat ini sudah cukup untuk membuat pendengar tahu siapa yang dimaksud, tanpa menghalangi makna aslinya sebagai "pencipta".</div>
+    </div>
+    <p class="note">Ciri pengenal: kalimatnya berbentuk "julukan/sifat" tanpa nama, tapi pendengar tetap bisa menebak siapa mauṣūf-nya dari sifat itu.</p>
+  </div>
+
+  <!-- BAB 2 -->
+  <div class="bab">
+    <div class="bab-head">
+      <span class="bab-no">ب</span>
+      <div class="bab-title-group">
+        <h2>Kināyah Ṣifat</h2>
+        <div class="ar">كِنَايَة عَنِ الصِّفَة</div>
+      </div>
+    </div>
+
+    <div class="def-card">
+      <span class="label">Definisi</span>
+      <p>Menyebutkan <strong>mauṣūf</strong> secara langsung, tetapi <strong>membuang sifatnya</strong>, lalu diganti dengan sesuatu yang <em>lazim</em> (biasa menyertai/menandai sifat itu) — tanpa menghalangi penggunaan makna asli.</p>
+    </div>
+
+    <div class="breakdown">
+      <span class="chip">Mauṣūf <span class="arrow">→</span> disebutkan</span>
+      <span class="chip">Sifat <span class="arrow">→</span> dibuang, diganti hal lazim</span>
+      <span class="chip">Makna asli <span class="arrow">→</span> tetap boleh</span>
+    </div>
+
+    <div class="example">
+      <div class="ex-label">Contoh</div>
+      <div class="arabic-line">زَيْدٌ كَثِيرُ الرَّمَادِ</div>
+      <div class="translit">Zaidun kaṡīrur-ramād</div>
+      <div class="meaning">"Zaid itu banyak abu (dapur)nya"</div>
+      <div class="expl"><strong>Mauṣūf</strong>-nya jelas disebut: "Zaid". Tapi sifat yang dimaksud — <em>dermawan</em> — tidak disebut langsung, melainkan diwakilkan lewat hal yang lazim menyertainya: "banyak abu dapur", karena orang yang sering menjamu tamu tentu sering memasak, sehingga abu dapurnya banyak.</div>
+    </div>
+    <p class="note">Ciri pengenal: subjeknya (orang/benda) disebut jelas namanya, tapi sifatnya "dititipkan" lewat tanda/akibat yang biasa menyertainya.</p>
+  </div>
+
+  <!-- BAB 3 -->
+  <div class="bab">
+    <div class="bab-head">
+      <span class="bab-no">ج</span>
+      <div class="bab-title-group">
+        <h2>Kināyah Nisbah</h2>
+        <div class="ar">كِنَايَة عَنِ النِّسْبَة</div>
+      </div>
+    </div>
+
+    <div class="def-card">
+      <span class="label">Definisi</span>
+      <p>Menyebutkan <strong>sifat</strong>, tetapi tidak menisbahkannya langsung kepada subjek yang disifati — melainkan kepada <strong>sesuatu yang berkaitan</strong> dengan subjek itu. Ciri paling menonjol: kata-katanya menjelaskan sifat, atau sesuatu yang menunjukkan sifat itu.</p>
+    </div>
+
+    <div class="breakdown">
+      <span class="chip">Sifat <span class="arrow">→</span> disebutkan</span>
+      <span class="chip">Nisbah <span class="arrow">→</span> dialihkan ke hal terkait subjek</span>
+      <span class="chip">Subjek <span class="arrow">→</span> tetap dikenali</span>
+    </div>
+
+    <div class="example">
+      <div class="ex-label">Contoh</div>
+      <div class="arabic-line">اَلْمَجْدُ بَيْنَ ثَوْبَيْهِ</div>
+      <div class="translit">al-majdu baina ṡaubaih</div>
+      <div class="meaning">"Kemuliaan ada di antara pakaiannya"</div>
+      <div class="expl">Sifat "mulia" tetap disebutkan, tetapi <strong>tidak dinisbahkan langsung</strong> kepada orangnya, melainkan kepada <strong>pakaiannya</strong> — sesuatu yang melekat dan berkaitan dengan orang itu. Padahal yang sebenarnya dimaksud mulia adalah orangnya, bukan kainnya.</div>
+    </div>
+    <p class="note">Ciri pengenal: sifatnya jelas terucap, tapi "ditempelkan" pada benda/hal yang menyertai subjek — bukan pada subjeknya sendiri.</p>
+  </div>
+
+  <!-- COMPARISON -->
+  <div class="compare">
+    <h2>Ringkasan Perbandingan</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Jenis</th>
+          <th>Yang disebut</th>
+          <th>Yang disembunyikan / dialihkan</th>
+          <th>Contoh singkat</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="jenis">Mauṣūf</td>
+          <td>Sifat</td>
+          <td>Mauṣūf (subjeknya) dibuang</td>
+          <td>"Pencipta langit dan bumi"</td>
+        </tr>
+        <tr>
+          <td class="jenis">Ṣifat</td>
+          <td>Mauṣūf</td>
+          <td>Sifat dibuang, diganti hal lazim</td>
+          <td>"Zaid banyak abu dapurnya"</td>
+        </tr>
+        <tr>
+          <td class="jenis">Nisbah</td>
+          <td>Sifat</td>
+          <td>Nisbah dialihkan ke hal terkait subjek</td>
+          <td>"Kemuliaan di antara pakaiannya"</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>Materi Balaghah — Bab Kināyah</footer>
+
+</body>
+</html>
