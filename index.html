@@ -1,529 +1,129 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kināyah & Kalam Khabar — Ilmu Balaghah</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --emerald: #123527;
-    --emerald-deep: #0b241a;
-    --parchment: #f6efdc;
-    --parchment-soft: #fbf7ea;
-    --gold: #b8860b;
-    --gold-light: #d9ac3d;
-    --maroon: #7b2d26;
-    --ink: #2b2620;
-    --ink-soft: #4a4338;
-  }
-
-  *{ box-sizing: border-box; }
-
-  body{
-    margin:0;
-    background: var(--parchment-soft);
-    color: var(--ink);
-    /* Diubah menggunakan Poppins agar lebih bersih, tegas, dan mudah dibaca */
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.8;
-    font-size: 1.05rem; /* Ukuran font sedikit diperbesar */
-  }
-
-  /* ---------- HERO ---------- */
-  .hero{
-    position: relative;
-    background: radial-gradient(circle at 20% 20%, #16412f 0%, var(--emerald) 45%, var(--emerald-deep) 100%);
-    color: var(--parchment);
-    padding: 5rem 1.5rem 4.5rem;
-    text-align: center;
-    overflow: hidden;
-  }
-  .hero::before{
-    content:"";
-    position:absolute; inset:0;
-    background-image:
-      repeating-linear-gradient(45deg, rgba(184,134,11,0.06) 0 2px, transparent 2px 24px),
-      repeating-linear-gradient(-45deg, rgba(184,134,11,0.06) 0 2px, transparent 2px 24px);
-    pointer-events:none;
-  }
-  .hero-arabic{
-    position:relative;
-    font-family:'Amiri', serif;
-    font-size: clamp(2.4rem, 7vw, 4rem);
-    color: var(--gold-light);
-    letter-spacing: 2px;
-    direction: rtl;
-  }
-  .hero-eyebrow{
-    position:relative;
-    font-size:0.75rem;
-    letter-spacing:4px;
-    text-transform:uppercase;
-    color: var(--gold-light);
-    margin-bottom:1rem;
-    opacity:0.9;
-    font-weight: 600;
-  }
-  .hero h1{
-    position:relative;
-    font-weight:700;
-    font-size: clamp(2.1rem, 5vw, 3.4rem);
-    margin: 0.6rem 0 0.8rem;
-  }
-  .hero p.sub{
-    position:relative;
-    max-width: 560px;
-    margin: 0 auto;
-    color: #d8cfb0;
-    font-size: 1.05rem;
-  }
-
-  .divider{
-    display:flex; align-items:center; justify-content:center; gap:12px;
-    margin: 2.4rem auto 0;
-    max-width: 320px;
-    position:relative;
-  }
-  .divider .line{ flex:1; height:1px; background: linear-gradient(90deg, transparent, var(--gold-light), transparent); }
-  .divider .diamond{
-    width:8px;height:8px; background:var(--gold-light); transform:rotate(45deg);
-  }
-
-  /* ---------- CONTAINER ---------- */
-  .wrap{
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 3.5rem 1.5rem 5rem;
-  }
-
-  .intro{
-    background: var(--parchment);
-    border: 1px solid #e4d9b6;
-    border-radius: 6px;
-    padding: 1.6rem 1.8rem;
-    margin-bottom: 3.5rem;
-    color: var(--ink-soft);
-    font-size: 1rem;
-  }
-  .intro strong{ color: var(--emerald); }
-
-  /* ---------- CHAPTER ---------- */
-  .bab{
-    margin-bottom: 4.2rem;
-  }
-  .bab-head{
-    display:flex;
-    align-items:baseline;
-    gap: 1rem;
-    margin-bottom: 1.1rem;
-    border-bottom: 2px solid var(--gold);
-    padding-bottom: 0.7rem;
-  }
-  .bab-no{
-    font-family:'Amiri', serif;
-    font-size: 1.6rem;
-    color: var(--gold);
-    direction: rtl;
-    flex-shrink:0;
-  }
-  .bab-title-group h2{
-    font-size: 1.75rem;
-    font-weight:700;
-    color: var(--emerald);
-    margin:0;
-  }
-  .bab-title-group .ar{
-    font-family:'Amiri', serif;
-    direction: rtl;
-    font-size: 1.2rem;
-    color: var(--maroon);
-    margin-top: 2px;
-  }
-
-  .sub-section-title {
-    font-size: 1.25rem;
-    color: var(--emerald);
-    margin: 1.8rem 0 0.8rem;
-    font-weight: 600;
-    border-left: 4px solid var(--gold);
-    padding-left: 0.8rem;
-  }
-
-  .def-card{
-    background: var(--parchment);
-    border-left: 4px solid var(--emerald);
-    padding: 1.3rem 1.6rem;
-    border-radius: 4px;
-    margin-bottom: 1.4rem;
-  }
-  .def-card .label{
-    font-size:0.7rem;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    color: var(--gold);
-    margin-bottom: 0.5rem;
-    display:block;
-    font-weight: 600;
-  }
-  .def-card p{ margin: 0; color: var(--ink); }
-
-  .list-styled {
-    margin: 0.8rem 0 1.5rem 1.2rem;
-    padding: 0;
-    color: var(--ink);
-  }
-  .list-styled li {
-    margin-bottom: 0.6rem;
-  }
-
-  .breakdown{
-    display:flex;
-    flex-wrap:wrap;
-    gap: 0.6rem;
-    margin: 1.2rem 0 1.6rem;
-  }
-  .chip{
-    background: var(--emerald);
-    color: var(--parchment);
-    font-size: 0.8rem;
-    padding: 0.4rem 0.9rem;
-    border-radius: 20px;
-    display:flex;
-    align-items:center;
-    gap: 0.5rem;
-    font-weight: 500;
-  }
-  .chip .arrow{ color: var(--gold-light); }
-
-  .example{
-    background: var(--emerald-deep);
-    color: var(--parchment);
-    border-radius: 8px;
-    padding: 1.6rem 1.7rem;
-    position: relative;
-    overflow:hidden;
-    margin-bottom: 1.2rem;
-  }
-  .example::before{
-    content:"مثال";
-    position:absolute;
-    top: -6px; right: 14px;
-    font-family:'Amiri', serif;
-    font-size: 3.6rem;
-    color: rgba(184,134,11,0.12);
-  }
-  .example .ex-label{
-    font-size:0.7rem;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    color: var(--gold-light);
-    margin-bottom: 0.9rem;
-    font-weight: 600;
-  }
-  .example .arabic-line{
-    font-family:'Amiri', serif;
-    direction: rtl;
-    font-size: 1.7rem;
-    color: #f6efdc;
-    margin-bottom: 0.6rem;
-    line-height: 1.9;
-  }
-  .example .translit{
-    font-style: italic;
-    color: #cdbf8f;
-    font-size: 0.95rem;
-    margin-bottom: 0.9rem;
-  }
-  .example .meaning{
-    font-size: 0.9rem;
-    color: var(--gold-light);
-    margin-bottom: 0.7rem;
-    font-weight: 500;
-  }
-  .example .expl{
-    color: #e5ddc4;
-    font-size: 0.95rem;
-    border-top: 1px solid rgba(184,134,11,0.25);
-    padding-top: 0.9rem;
-    margin-top: 0.5rem;
-  }
-
-  /* ---------- COMPARISON TABLE ---------- */
-  .compare{
-    margin-top: 4rem;
-  }
-  .compare h2{
-    font-size: 1.6rem;
-    color: var(--emerald);
-    text-align:center;
-    margin-bottom: 1.6rem;
-    font-weight: 700;
-  }
-  table{
-    width:100%;
-    border-collapse: collapse;
-    background: var(--parchment);
-    border-radius: 6px;
-    overflow:hidden;
-    font-size: 0.92rem;
-  }
-  thead th{
-    background: var(--emerald);
-    color: var(--parchment);
-    font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 0.9rem 1rem;
-    text-align: left;
-  }
-  tbody td{
-    padding: 0.9rem 1rem;
-    border-bottom: 1px solid #e4d9b6;
-    vertical-align: top;
-  }
-  tbody tr:last-child td{ border-bottom:none; }
-  tbody td.jenis{ font-weight:600; color: var(--maroon); white-space: nowrap; }
-
-  footer{
-    text-align:center;
-    padding: 2.5rem 1rem 3rem;
-    color: var(--ink-soft);
-    font-size: 0.82rem;
-    letter-spacing: 0.5px;
-    font-weight: 500;
-  }
-
-  @media (max-width: 600px){
-    body { font-size: 1rem; }
-    .hero{ padding: 3.5rem 1.2rem 3rem; }
-    .wrap{ padding: 2.5rem 1.1rem 3rem; }
-    table{ font-size: 0.85rem; }
-  }
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manajemen Inventaris & Ekspor Barang Habis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="bg-white shadow-sm rounded-xl p-6 mb-6 border border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-boxes-stacked text-blue-600"></i> Manajemen Inventaris Barang
+                </h1>
+                <p class="text-sm text-slate-500 mt-1">Kelola stok barang, tandai barang habis, dan cetak laporan.</p>
+            </div>
+            <button onclick="exportToPDF()" class="bg-rose-600 hover:bg-rose-700 text-white font-medium px-4 py-2.5 rounded-lg shadow-sm transition flex items-center gap-2 text-sm">
+                <i class="fa-solid fa-file-pdf"></i> Export Barang Habis (PDF)
+            </button>
+        </div>
 
-<div class="hero">
-  <div class="hero-eyebrow">Ilmu Balaghah · Bayān & Ma'ānī</div>
-  <div class="hero-arabic">الكِنَايَة وَالْكَلَامُ الْخَبَرِي</div>
-  <h1>Kināyah & Kalam Khabar</h1>
-  <p class="sub">Pembahasan lengkap mengenai Kināyah (beserta jenis & fungsinya) serta Kalam Khabar beserta macam-macamnya.</p>
-  <div class="divider"><span class="line"></span><span class="diamond"></span><span class="line"></span></div>
+        <!-- Form Tambah Barang -->
+        <div class="bg-white shadow-sm rounded-xl p-6 mb-6 border border-slate-100">
+            <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-plus-circle text-emerald-600"></i> Tambah Barang Baru
+            </h2>
+            <form id="itemForm" onsubmit="addItem(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Nama Barang</label>
+                    <input type="text" id="itemName" required placeholder="Contoh: Kertas A4" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" />
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Jumlah</label>
+                    <input type="number" id="itemValue" required min="0" placeholder="Contoh: 500" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" />
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Satuan</label>
+                    <select id="itemUnit" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">
+                        <option value="Unit">Unit</option>
+                        <option value="Botol">Botol</option>
+                        <option value="Kotak">Kotak</option>
+                        <option value="Lembar">Lembar</option>
+                        <option value="Pcs">Pcs</option>
+                        <option value="Kg">Kg</option>
+                        <option value="Liter">Liter</option>
+                        <option value="Pak">Pak</option>
+                        <option value="Dus">Dus</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition text-sm">
+                        Simpan Barang
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Filter & Daftar Barang -->
+        <div class="bg-white shadow-sm rounded-xl p-6 border border-slate-100">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-3">
+                <h2 class="text-lg font-semibold text-slate-800">Daftar Inventaris</h2>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <span class="text-xs text-slate-500 font-medium">Filter:</span>
+                    <select id="filterStatus" onchange="renderTable()" class="px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <option value="all">Semua Barang</option>
+                        <option value="available">Tersedia</option>
+                        <option value="out">Habis</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tabel Data -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase bg-slate-50">
+                            <th class="py-3 px-4">Nama Barang</th>
+                            <th class="py-3 px-4">Jumlah</th>
+                            <th class="py-3 px-4 text-center">Status</th>
+                            <th class="py-3 px-4 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemTableBody" class="divide-y divide-slate-100 text-sm">
+                        <!-- Data akan dimasukkan lewat JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template PDF - Versi Sederhana (Tanpa Status) -->
+<div id="pdfTemplateContainer" style="display: none;">
+    <div id="pdfContent" style="padding: 30px; font-family: 'Inter', sans-serif; color: #1e293b; background: white;">
+        <div style="text-align: center; border-bottom: 2px solid #cbd5e1; padding-bottom: 15px; margin-bottom: 20px;">
+            <h2 style="margin: 0; font-size: 20px; font-weight: bold; color: #0f172a;">TOKO ISMI ALEM</h2>
+            <p style="margin: 5px 0 0 0; font-size: 12px; color: #64748b;" id="pdfDate"></p>
+        </div>
+        
+        <!-- Tabel hanya 2 kolom: Nama Barang & Jumlah -->
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <thead>
+                <tr style="background-color: #f1f5f9;">
+                    <th style="padding: 10px; text-align: center; border: 1px solid #cbd5e1; width: 10%;">No</th>
+                    <th style="padding: 10px; text-align: left; border: 1px solid #cbd5e1; width: 55%;">Nama Barang</th>
+                    <th style="padding: 10px; text-align: center; border: 1px solid #cbd5e1; width: 35%;">Jumlah yang Akan Dipesan</th>
+                </tr>
+            </thead>
+            <tbody id="pdfTableBody">
+                <!-- Data barang habis untuk PDF -->
+            </tbody>
+        </table>
+        
+        <!-- Footer -->
+        <div style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; text-align: center; font-size: 11px; color: #94a3b8;">
+            <p>Dicetak pada: <span id="pdfFooterDate"></span></p>
+            <p style="margin-top: 5px;">Mohon segera dilakukan pemesanan untuk barang-barang di atas.</p>
+        </div>
+    </div>
 </div>
 
-<div class="wrap">
-
-  <div class="intro">
-    <strong>Pengantar:</strong> Halaman ini merangkum materi Ilmu Balaghah yang mencakup kajian <strong>Kināyah</strong> (dalam disiplin ilmu Bayān) serta <strong>Kalam Khabar</strong> (dalam disiplin ilmu Ma'ānī) beserta fungsi dan pembagian jenisnya.
-  </div>
-
-  <!-- BAGIAN A: KINAYAH -->
-  <div class="bab">
-    <div class="bab-head">
-      <span class="bab-no">أ</span>
-      <div class="bab-title-group">
-        <h2>Kināyah</h2>
-        <div class="ar">الكِنَايَة</div>
-      </div>
-    </div>
-
-    <!-- 1. Pengertian Kinayah -->
-    <div class="sub-section-title">1. Pengertian Kināyah</div>
-    <div class="def-card">
-      <span class="label">Definisi</span>
-      <p>Kināyah adalah lafal yang memiliki makna asli, tetapi yang dimaksud adalah kelaziman dari makna aslinya meski masih mungkin untuk dipahami dengan makna asli tersebut.</p>
-    </div>
-
-    <!-- 2. Jenis-jenis Kinayah -->
-    <div class="sub-section-title" style="margin-top: 2.5rem;">2. Bentuk/Jenis Kināyah</div>
-    
-    <!-- BAB 1 -->
-    <div style="margin-top: 1.5rem;">
-      <h3 style="color:var(--emerald); font-size:1.3rem; margin-bottom:0.5rem; font-weight:600;">a. Kināyah Mauṣūf <span style="font-family:'Amiri'; font-size:1.1rem; color:var(--maroon); font-weight:normal;">(كِنَايَة عَنِ المَوْصُوف)</span></h3>
-      <div class="def-card">
-        <span class="label">Definisi</span>
-        <p>Menyebutkan <strong>sifat</strong>, sedangkan yang disifati (<em>mauṣūf</em>) <strong>dibuang</strong> — tidak disebut secara langsung. Meski begitu, makna asli (hakiki) dari kata-kata itu tetap boleh dimaksudkan.</p>
-      </div>
-      <div class="breakdown">
-        <span class="chip">Sifat <span class="arrow">→</span> disebutkan</span>
-        <span class="chip">Mauṣūf <span class="arrow">→</span> dibuang / disamarkan</span>
-        <span class="chip">Makna asli <span class="arrow">→</span> tetap boleh</span>
-      </div>
-      <div class="example">
-        <div class="ex-label">Contoh</div>
-        <div class="arabic-line">خَالِقُ السَّمَاوَاتِ وَالْأَرْضِ</div>
-        <div class="translit">khāliqu as-samāwāti wal-arḍ</div>
-        <div class="meaning">"Pencipta langit dan bumi"</div>
-        <div class="expl">Di sini yang disebutkan hanyalah <strong>sifat</strong>-Nya, yaitu "Pencipta langit dan bumi", sedangkan <strong>mauṣūf</strong>-nya (yaitu Allah) tidak disebut namanya secara langsung.</div>
-      </div>
-    </div>
-
-    <!-- BAB 2 -->
-    <div style="margin-top: 2rem;">
-      <h3 style="color:var(--emerald); font-size:1.3rem; margin-bottom:0.5rem; font-weight:600;">b. Kināyah Ṣifat <span style="font-family:'Amiri'; font-size:1.1rem; color:var(--maroon); font-weight:normal;">(كِنَايَة عَنِ الصِّفَة)</span></h3>
-      <div class="def-card">
-        <span class="label">Definisi</span>
-        <p>Menyebutkan <strong>mauṣūf</strong> secara langsung, tetapi <strong>membuang sifatnya</strong>, lalu diganti dengan sesuatu yang <em>lazim</em> (biasa menyertai/menandai sifat itu).</p>
-      </div>
-      <div class="breakdown">
-        <span class="chip">Mauṣūf <span class="arrow">→</span> disebutkan</span>
-        <span class="chip">Sifat <span class="arrow">→</span> dibuang, diganti hal lazim</span>
-        <span class="chip">Makna asli <span class="arrow">→</span> tetap boleh</span>
-      </div>
-      <div class="example">
-        <div class="ex-label">Contoh</div>
-        <div class="arabic-line">زَيْدٌ كَثِيرُ الرَّمَادِ</div>
-        <div class="translit">Zaidun kaṡīrur-ramād</div>
-        <div class="meaning">"Zaid itu banyak abu (dapur)nya"</div>
-        <div class="expl"><strong>Mauṣūf</strong>-nya jelas disebut: "Zaid". Tapi sifat dermawan diwakilkan lewat hal lazimnya: "banyak abu dapur" karena sering memasak untuk menjamu tamu.</div>
-      </div>
-    </div>
-
-    <!-- BAB 3 -->
-    <div style="margin-top: 2rem;">
-      <h3 style="color:var(--emerald); font-size:1.3rem; margin-bottom:0.5rem; font-weight:600;">c. Kināyah Nisbah <span style="font-family:'Amiri'; font-size:1.1rem; color:var(--maroon); font-weight:normal;">(كِنَايَة عَنِ النِّسْبَة)</span></h3>
-      <div class="def-card">
-        <span class="label">Definisi</span>
-        <p>Menyebutkan <strong>sifat</strong>, tetapi tidak menisbahkannya langsung kepada subjek yang disifati — melainkan kepada <strong>sesuatu yang berkaitan</strong> dengan subjek itu.</p>
-      </div>
-      <div class="breakdown">
-        <span class="chip">Sifat <span class="arrow">→</span> disebutkan</span>
-        <span class="chip">Nisbah <span class="arrow">→</span> dialihkan ke hal terkait subjek</span>
-      </div>
-      <div class="example">
-        <div class="ex-label">Contoh</div>
-        <div class="arabic-line">اَلْمَجْدُ بَيْنَ ثَوْبَيْهِ</div>
-        <div class="translit">al-majdu baina ṡaubaih</div>
-        <div class="meaning">"Kemuliaan ada di antara pakaiannya"</div>
-        <div class="expl">Sifat "mulia" tetap disebutkan, tetapi dinisbahkan kepada <strong>pakaiannya</strong> (sesuatu yang melekat dan berkaitan dengan orangnya).</div>
-      </div>
-    </div>
-
-    <!-- 3. Fungsi Kinayah -->
-    <div class="sub-section-title" style="margin-top: 2.5rem;">3. Fungsi Kināyah</div>
-    <div class="def-card">
-      <span class="label">Fungsi Utama</span>
-      <p>Ada banyak fungsi kināyah, di antaranya adalah:</p>
-      <ul class="list-styled">
-        <li><strong>a.</strong> Menjelaskan</li>
-        <li><strong>b.</strong> Memperindah makna</li>
-        <li><strong>c.</strong> Menjelekkan sesuatu</li>
-        <li><strong>d.</strong> Menghindari sesuatu yang tabu / vulgar</li>
-      </ul>
-    </div>
-
-  </div>
-
-
-  <!-- COMPARISON -->
-  <div class="compare">
-    <h2>Ringkasan Perbandingan Kināyah</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Jenis</th>
-          <th>Yang disebut</th>
-          <th>Yang disembunyikan / dialihkan</th>
-          <th>Contoh singkat</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="jenis">Mauṣūf</td>
-          <td>Sifat</td>
-          <td>Mauṣūf (subjeknya) dibuang</td>
-          <td>"Pencipta langit dan bumi"</td>
-        </tr>
-        <tr>
-          <td class="jenis">Ṣifat</td>
-          <td>Mauṣūf</td>
-          <td>Sifat dibuang, diganti hal lazim</td>
-          <td>"Zaid banyak abu dapurnya"</td>
-        </tr>
-        <tr>
-          <td class="jenis">Nisbah</td>
-          <td>Sifat</td>
-          <td>Nisbah dialihkan ke hal terkait subjek</td>
-          <td>"Kemuliaan di antara pakaiannya"</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- BAGIAN B: KALAM KHABAR -->
-  <div class="bab" style="margin-top: 4rem;">
-    <div class="bab-head">
-      <span class="bab-no">ب</span>
-      <div class="bab-title-group">
-        <h2>Kalam Khabar dan Macam-macamnya</h2>
-        <div class="ar">الكَلَامُ الْخَبَرِي وَأَقْسَامُهُ</div>
-      </div>
-    </div>
-
-    <!-- 1. Pengertian Kalam Khabar -->
-    <div class="sub-section-title">1. Pengertian Kalām Khabar</div>
-    <div class="def-card">
-      <span class="label">Definisi</span>
-      <p>Kalām khabar adalah kalimat yang mengandung kemungkinan benar atau tidak benar (dusta).</p>
-    </div>
-
-    <!-- 2. Tujuan Kalam Khabar -->
-    <div class="sub-section-title" style="margin-top: 2.5rem;">2. Tujuan Kalām Khabar</div>
-    <div class="def-card">
-      <span class="label">Penjelasan Tujuan</span>
-      <p><strong>1.</strong> Pada dasarnya kalām khabar itu diucapkan untuk salah satu dari dua maksud berikut:</p>
-      <ul class="list-styled">
-        <li><strong>a.</strong> Memberitahu kepada orang yang diajak bicara mengenai hukum yang terkandung di dalamnya, dan hukum tersebut disebut sebagai <strong>Fāidah al-khabar</strong>.</li>
-        <li><strong>b.</strong> Memberitahu bahwa si pembicara mengetahui hukum yang terkandung di dalamnya, dan hal ini disebut <strong>lāzim fāidah</strong>.</li>
-      </ul>
-      <p style="margin-top: 1rem;"><strong>2.</strong> Terkadang kalām khabar diucapkan untuk maksud yang lain yang dapat dipahami dari susunan kalimat. Maksud-maksud lain tersebut antara lain adalah:</p>
-      <ul class="list-styled">
-        <li><em>Al-istirḥām</em> (untuk mencari belas kasihan)</li>
-        <li><em>Iẓhār aḍ-ḍa’f</em> (menampakkan kelemahan)</li>
-        <li><em>Iẓhār taḥassur</em> (menampakkan kekecewaan)</li>
-        <li><em>Al-fakhr</em> (untuk kesombongan)</li>
-        <li>Menghimbau untuk berusaha dan rajin</li>
-      </ul>
-    </div>
-
-    <!-- 3. Macam-macam Kalam Khabar -->
-    <div class="sub-section-title" style="margin-top: 2.5rem;">3. Macam-macam Kalām Khabar</div>
-    
-    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem;">
-      <!-- Khabar Ibtidai -->
-      <div class="example" style="background: var(--emerald);">
-        <div class="ex-label">a. Khabar Ibtidāĭ</div>
-        <p style="color: #f6efdc; margin-bottom: 0.8rem; font-size: 0.95rem;">Ditujukan kepada lawan bicara yang belum mengetahui isi berita (tidak membutuhkan <em>taukĭd</em>).</p>
-        <div class="arabic-line">زَيْدٌ قَائِمٌ</div>
-        <div class="translit">Zaidun qāimun</div>
-        <div class="meaning">"Zaid itu berdiri"</div>
-      </div>
-
-      <!-- Khabar Talabi -->
-      <div class="example" style="background: var(--emerald);">
-        <div class="ex-label">b. Khabar Ṭalabĭ</div>
-        <p style="color: #f6efdc; margin-bottom: 0.8rem; font-size: 0.95rem;">Ditujukan kepada lawan bicara yang ragu-ragu (biasanya cukup <em>taukĭd</em> satu).</p>
-        <div class="arabic-line">إِنَّ زَيْداً قَائِمٌ</div>
-        <div class="translit">Inna Zaidan qāimun</div>
-        <div class="meaning">"Sesungguhnya Zaid itu berdiri"</div>
-      </div>
-
-      <!-- Khabar Inkari -->
-      <div class="example" style="background: var(--emerald);">
-        <div class="ex-label">c. Khabar Inkāri</div>
-        <p style="color: #f6efdc; margin-bottom: 0.8rem; font-size: 0.95rem;">Ditujukan kepada lawan bicara yang mengingkari bahkan membantah isi berita (wajib ada <em>taukĭd</em>, biasanya lebih dari satu).</p>
-        <div class="arabic-line">وَاللَّهِ إِنَّ زَيْداً لَقَائِمٌ</div>
-        <div class="translit">Wallāhi inna Zaidan laqāimun</div>
-        <div class="meaning">"Demi Allah, sesungguhnya Zaid benar-benar berdiri"</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<footer>Materi Balaghah — Kināyah & Kalam Khabar</footer>
-
+    <!-- JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
