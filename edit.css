@@ -1,0 +1,325 @@
+/* edit.css - Styling untuk halaman edit jumlah */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+}
+
+@media (min-width: 640px) {
+    body {
+        padding: 2rem 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    body {
+        padding: 2rem 2rem;
+    }
+}
+
+/* Header halaman edit */
+.edit-header {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 60%, #5b21b6 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.edit-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.15), transparent 60%);
+    pointer-events: none;
+}
+
+.edit-header h1,
+.edit-header p,
+.edit-header div {
+    position: relative;
+    z-index: 1;
+}
+
+/* Tabel edit - styling */
+.edit-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.edit-table thead th {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 12px 16px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.edit-table tbody td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.edit-table tbody tr:hover {
+    background-color: #faf5ff;
+}
+
+.edit-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Input jumlah */
+.edit-quantity-input {
+    width: 80px;
+    padding: 6px 8px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 600;
+    color: #1e293b;
+    transition: all 0.2s ease;
+    background-color: white;
+    -moz-appearance: textfield;
+}
+
+.edit-quantity-input::-webkit-outer-spin-button,
+.edit-quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.edit-quantity-input:focus {
+    border-color: #7c3aed;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+.edit-quantity-input:hover {
+    border-color: #a78bfa;
+}
+
+.edit-quantity-input:disabled {
+    background-color: #f1f5f9;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Tombol kontrol jumlah (+/-) */
+.qty-control-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.qty-control-btn.minus {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.qty-control-btn.minus:hover {
+    background-color: #fecaca;
+    transform: scale(1.05);
+}
+
+.qty-control-btn.plus {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.qty-control-btn.plus:hover {
+    background-color: #bbf7d0;
+    transform: scale(1.05);
+}
+
+.qty-control-btn:active {
+    transform: scale(0.92);
+}
+
+/* Badge stok saat ini */
+.current-stock-badge {
+    display: inline-block;
+    background-color: #e0e7ff;
+    color: #4338ca;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.current-stock-badge.changed {
+    background-color: #fef3c7;
+    color: #92400e;
+    animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Tombol aksi */
+.edit-action-btn {
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.edit-action-btn:hover {
+    transform: translateY(-2px);
+}
+
+.edit-action-btn:active {
+    transform: scale(0.96);
+}
+
+.edit-action-btn.primary {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    color: white;
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+}
+
+.edit-action-btn.primary:hover {
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+}
+
+.edit-action-btn.secondary {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+.edit-action-btn.secondary:hover {
+    background-color: #e2e8f0;
+}
+
+.edit-action-btn.success {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white;
+    box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+}
+
+.edit-action-btn.success:hover {
+    box-shadow: 0 6px 20px rgba(22, 163, 74, 0.45);
+}
+
+/* Animasi fade-in */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.max-w-5xl {
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+/* Responsif */
+@media (max-width: 640px) {
+    .edit-quantity-input {
+        width: 56px;
+        font-size: 13px;
+        padding: 4px 4px;
+    }
+    
+    .qty-control-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 13px;
+    }
+    
+    .edit-table thead th,
+    .edit-table tbody td {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+    
+    .edit-action-btn {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+    
+    .edit-header h1 {
+        font-size: 1.2rem;
+    }
+    
+    .edit-header .text-sm {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .edit-quantity-input {
+        width: 48px;
+        font-size: 12px;
+        padding: 3px 2px;
+    }
+    
+    .qty-control-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 11px;
+    }
+    
+    .edit-table thead th,
+    .edit-table tbody td {
+        padding: 6px 6px;
+        font-size: 12px;
+    }
+    
+    .current-stock-badge {
+        font-size: 0.65rem;
+        padding: 2px 8px;
+    }
+}
+
+/* Style untuk status bar */
+#statusBar {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background-color: #1e293b;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    font-size: 0.875rem;
+    z-index: 9999;
+    transition: all 0.3s ease;
+    transform: translateY(100px);
+    opacity: 0;
+    max-width: 90%;
+}
+
+#statusBar.show {
+    transform: translateY(0);
+    opacity: 1;
+}

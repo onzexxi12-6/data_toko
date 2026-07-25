@@ -24,15 +24,7 @@ function getDefaultData() {
     }
     
     // Jika tidak ada, gunakan data default hardcode
-    const defaultItems = [
-        { name: 'Kertas A4', value: 500, unit: 'Lembar', isOut: false },
-        { name: 'Tinta Printer', value: 2, unit: 'Botol', isOut: true },
-        { name: 'Pensil 2B', value: 10, unit: 'Kotak', isOut: false },
-        { name: 'Spidol Whiteboard', value: 5, unit: 'Pcs', isOut: true },
-        { name: 'Amplop Coklat', value: 100, unit: 'Lembar', isOut: false },
-        { name: 'Penggaris', value: 15, unit: 'Pcs', isOut: false },
-        { name: 'Penghapus', value: 30, unit: 'Pcs', isOut: true }
-    ];
+    const defaultItems = [];
 
     // Auto-generate ID
     const items = defaultItems.map((item, index) => ({
@@ -125,12 +117,13 @@ function getItemById(id) {
     return inventoryData.items.find(item => item.id === id);
 }
 
-function addItemData(name, value, unit) {
+function addItemData(name, value, unit, price) {
     const newItem = {
         id: inventoryData.nextId++,
         name: name.trim(),
         value: parseInt(value, 10),
         unit: unit || 'Unit',
+        price: isNaN(parseInt(price, 10)) ? 0 : parseInt(price, 10),
         isOut: false
     };
     inventoryData.items.push(newItem);
@@ -261,10 +254,14 @@ function renderTable() {
     // Update jumlah barang di header
     updateItemCount(items.length, filtered.length);
 
+    // Update total nilai inventaris
+    const totalValue = items.reduce((sum, item) => sum + (item.price || 0) * (item.value || 0), 0);
+    updateTotalValueBar(totalValue);
+
     if (filtered.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="4" class="py-6 text-center text-sm text-slate-400">
+                <td colspan="6" class="py-6 text-center text-sm text-slate-400">
                     <i class="fa-regular fa-face-frown mr-1"></i> Tidak ada data
                 </td>
             </tr>
@@ -276,21 +273,25 @@ function renderTable() {
         <tr class="hover:bg-slate-50 transition">
             <td class="py-3 px-4 font-medium text-slate-800">${escapeHtml(item.name)}</td>
             <td class="py-3 px-4 text-slate-600">${item.value} ${item.unit || 'Unit'}</td>
+            <td class="py-3 px-4 text-slate-600">${formatRupiah(item.price)}</td>
+            <td class="py-3 px-4 text-right font-semibold text-slate-800">${formatRupiah((item.price || 0) * (item.value || 0))}</td>
             <td class="py-3 px-4 text-center">
                 <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold ${item.isOut ? 'bg-red-100 text-red-700' : 'bg-emerald-100 text-emerald-700'}">
                     ${item.isOut ? 'Habis' : 'Tersedia'}
                 </span>
             </td>
-            <td class="py-3 px-4 text-center">
-                <button onclick="toggleStatus(${item.id})" class="text-blue-600 hover:text-blue-800 transition mr-2" title="Ubah Status">
-                    <i class="fa-solid fa-rotate"></i>
-                </button>
-                <button onclick="editItem(${item.id})" class="text-yellow-600 hover:text-yellow-800 transition mr-2" title="Edit Barang">
-                    <i class="fa-solid fa-pen"></i>
-                </button>
-                <button onclick="deleteItem(${item.id})" class="text-rose-600 hover:text-rose-800 transition" title="Hapus Barang">
-                    <i class="fa-solid fa-trash-can"></i>
-                </button>
+            <td class="py-3 px-4">
+                <div class="flex items-center justify-center gap-1">
+                    <button onclick="toggleStatus(${item.id})" class="action-btn text-blue-600 hover:bg-blue-50" title="Ubah Status">
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+                    <button onclick="editItem(${item.id})" class="action-btn text-amber-600 hover:bg-amber-50" title="Edit Barang">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button onclick="deleteItem(${item.id})" class="action-btn text-rose-600 hover:bg-rose-50" title="Hapus Barang">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
             </td>
         </tr>
     `).join('');
@@ -310,6 +311,24 @@ function updateItemCount(total, filtered) {
     }
     if (countEl) {
         countEl.textContent = `Total: ${total} item | Ditampilkan: ${filtered} item`;
+    }
+}
+
+// Tampilkan total nilai inventaris di atas tabel
+function updateTotalValueBar(totalValue) {
+    let bar = document.getElementById('totalValueBar');
+    const tableWrapper = document.querySelector('.overflow-x-auto');
+    if (!bar && tableWrapper) {
+        bar = document.createElement('div');
+        bar.id = 'totalValueBar';
+        bar.className = 'total-value-bar mb-4';
+        tableWrapper.parentNode.insertBefore(bar, tableWrapper);
+    }
+    if (bar) {
+        bar.innerHTML = `
+            <i class="fa-solid fa-sack-dollar"></i>
+            <span>Total Nilai Inventaris: <strong>${formatRupiah(totalValue)}</strong></span>
+        `;
     }
 }
 
@@ -339,10 +358,14 @@ function editItem(id) {
     const newUnit = prompt('Edit Satuan:', item.unit || 'Unit');
     if (newUnit === null) return;
 
+    const newPrice = prompt('Edit Harga Satuan (Rp):', item.price || 0);
+    if (newPrice === null) return;
+
     const updated = updateItemData(id, {
         name: newName.trim() || item.name,
         value: parseInt(newValue, 10) || item.value,
-        unit: newUnit.trim() || item.unit
+        unit: newUnit.trim() || item.unit,
+        price: isNaN(parseInt(newPrice, 10)) ? (item.price || 0) : parseInt(newPrice, 10)
     });
 
     if (updated) {
@@ -487,20 +510,23 @@ function addItem(e) {
     const nameInput = document.getElementById('itemName');
     const valueInput = document.getElementById('itemValue');
     const unitInput = document.getElementById('itemUnit');
+    const priceInput = document.getElementById('itemPrice');
     
     const name = nameInput.value.trim();
     const value = parseInt(valueInput.value.trim(), 10);
     const unit = unitInput ? unitInput.value : 'Unit';
+    const price = priceInput ? parseInt(priceInput.value, 10) : 0;
 
     if (!name || isNaN(value) || value < 0) {
         alert('Harap isi nama barang dan nilai yang valid (minimal 0).');
         return;
     }
 
-    addItemData(name, value, unit);
+    addItemData(name, value, unit, price);
     nameInput.value = '';
     valueInput.value = '';
     if (unitInput) unitInput.value = 'Unit';
+    if (priceInput) priceInput.value = '';
     renderTable();
 }
 
@@ -536,7 +562,7 @@ function exportToPDF() {
                 <strong>${escapeHtml(item.name)}</strong>
             </td>
             <td style="padding: 10px; border: 1px solid #cbd5e1; text-align: center;">
-                <span style="background: #dbeafe; color: #1e40af; padding: 4px 12px; border-radius: 6px; font-weight: 600;">
+                <span style="background: transparent; color: #1e40af; padding: 4px 12px; border-radius: 6px; font-weight: 600;">
                     ${item.value} ${item.unit || 'Unit'}
                 </span>
             </td>
@@ -613,6 +639,11 @@ function updateStatusBar(message) {
 // =====================================================
 // UTILITY FUNCTIONS
 // =====================================================
+function formatRupiah(number) {
+    const value = Number(number) || 0;
+    return 'Rp' + value.toLocaleString('id-ID');
+}
+
 function escapeHtml(text) {
     const map = {
         '&': '&amp;',
@@ -637,20 +668,20 @@ function addDataManagementButtons() {
     buttonContainer.id = 'dataManagementButtons';
     buttonContainer.className = 'mt-4 flex flex-wrap gap-2';
     buttonContainer.innerHTML = `
-        <button onclick="exportData()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
+        <button onclick="exportData()" class="btn-press bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md text-sm transition flex items-center gap-2">
             <i class="fa-solid fa-download"></i> Backup Data
         </button>
-        <label class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2 cursor-pointer">
+        <label class="btn-press bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md text-sm transition flex items-center gap-2 cursor-pointer">
             <i class="fa-solid fa-upload"></i> Restore Data
             <input type="file" accept=".json" onchange="importData(event)" class="hidden">
         </label>
-        <button onclick="updateDefaultData()" class="bg-purple-600 hover:bg-purple-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2" title="Simpan data saat ini sebagai default">
+        <button onclick="updateDefaultData()" class="btn-press bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md text-sm transition flex items-center gap-2" title="Simpan data saat ini sebagai default">
             <i class="fa-solid fa-bookmark"></i> Simpan sebagai Default
         </button>
-        <button onclick="resetToDefaultData()" class="bg-orange-500 hover:bg-orange-600 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
+        <button onclick="resetToDefaultData()" class="btn-press bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md text-sm transition flex items-center gap-2">
             <i class="fa-solid fa-rotate"></i> Reset Default
         </button>
-        <button onclick="if(confirm('Hapus semua data?')){inventoryData={items:[],nextId:1};saveDataToStorage(inventoryData);updateDefaultData();renderTable();updateStatusBar('✅ Semua data dihapus');}" class="bg-rose-600 hover:bg-rose-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
+        <button onclick="if(confirm('Hapus semua data?')){inventoryData={items:[],nextId:1};saveDataToStorage(inventoryData);updateDefaultData();renderTable();updateStatusBar('✅ Semua data dihapus');}" class="btn-press bg-rose-600 hover:bg-rose-700 text-white font-semibold px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md text-sm transition flex items-center gap-2">
             <i class="fa-solid fa-trash"></i> Hapus Semua
         </button>
     `;
