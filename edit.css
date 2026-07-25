@@ -226,7 +226,85 @@ body {
     box-shadow: 0 6px 20px rgba(22, 163, 74, 0.45);
 }
 
-/* Animasi fade-in */
+/* ========== PREVIEW STYLES ========== */
+
+#previewContent table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+#previewContent table th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    color: #475569;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+#previewContent table td {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+#previewContent table tr:last-child td {
+    border-bottom: none;
+}
+
+#previewContent table tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Scrollbar preview */
+#previewContainer::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+#previewContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+#previewContainer::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+#previewContainer::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Animasi preview */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#previewContent {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Badge status preview */
+.status-badge-preview {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* Animasi fade-in halaman */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -238,7 +316,7 @@ body {
     }
 }
 
-.max-w-5xl {
+.max-w-6xl {
     animation: fadeInUp 0.4s ease-out forwards;
 }
 
@@ -273,6 +351,15 @@ body {
     
     .edit-header .text-sm {
         font-size: 0.75rem;
+    }
+    
+    #previewContent {
+        font-size: 10px;
+    }
+    
+    #previewContent table th,
+    #previewContent table td {
+        padding: 4px 6px !important;
     }
 }
 
