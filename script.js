@@ -4,56 +4,6 @@
 // KONFIGURASI STORAGE
 // =====================================================
 const STORAGE_KEY = 'inventory_data';
-
-// =====================================================
-// FUNGSI BACA & TULIS DATA
-// =====================================================
-
-// Baca data dari LocalStorage
-function loadDataFromStorage() {
-    try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-            const data = JSON.parse(stored);
-            if (data.items && Array.isArray(data.items)) {
-                // Pastikan semua item punya ID
-                data.items = data.items.map((item, index) => {
-                    if (!item.id) {
-                        item.id = data.nextId || index + 1;
-                    }
-                    return item;
-                });
-                // Update nextId jika perlu
-                if (data.items.length > 0) {
-                    const maxId = Math.max(...data.items.map(item => item.id));
-                    data.nextId = Math.max(data.nextId || 1, maxId + 1);
-                }
-                return data;
-            }
-        }
-        return getDefaultData();
-    } catch (error) {
-        console.error('Error loading data:', error);
-        return getDefaultData();
-    }
-}
-
-// Simpan data ke LocalStorage
-function saveDataToStorage(data) {
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        return true;
-    } catch (error) {
-        console.error('Error saving data:', error);
-        return false;
-    }
-}
-
-// Data default (auto-generate ID)
-// =====================================================
-// KONFIGURASI STORAGE
-// =====================================================
-const STORAGE_KEY = 'inventory_data';
 const DEFAULT_KEY = 'inventory_default'; // Key khusus untuk default data
 
 // =====================================================
@@ -101,6 +51,50 @@ function getDefaultData() {
 }
 
 // =====================================================
+// FUNGSI BACA & TULIS DATA
+// =====================================================
+
+// Baca data dari LocalStorage
+function loadDataFromStorage() {
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            const data = JSON.parse(stored);
+            if (data.items && Array.isArray(data.items)) {
+                // Pastikan semua item punya ID
+                data.items = data.items.map((item, index) => {
+                    if (!item.id) {
+                        item.id = data.nextId || index + 1;
+                    }
+                    return item;
+                });
+                // Update nextId jika perlu
+                if (data.items.length > 0) {
+                    const maxId = Math.max(...data.items.map(item => item.id));
+                    data.nextId = Math.max(data.nextId || 1, maxId + 1);
+                }
+                return data;
+            }
+        }
+        return getDefaultData();
+    } catch (error) {
+        console.error('Error loading data:', error);
+        return getDefaultData();
+    }
+}
+
+// Simpan data ke LocalStorage
+function saveDataToStorage(data) {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        return true;
+    } catch (error) {
+        console.error('Error saving data:', error);
+        return false;
+    }
+}
+
+// =====================================================
 // UPDATE DEFAULT DATA (Otomatis saat ada perubahan)
 // =====================================================
 function updateDefaultData() {
@@ -115,129 +109,12 @@ function updateDefaultData() {
 }
 
 // =====================================================
-// RESET KE DEFAULT (dengan data terbaru)
-// =====================================================
-function resetToDefaultData() {
-    if (!confirm('Reset semua data ke default?')) return;
-    
-    // Ambil default data terbaru
-    inventoryData = getDefaultData();
-    saveDataToStorage(inventoryData);
-    renderTable();
-    updateStatusBar('✅ Data berhasil direset ke default');
-}
-
-// =====================================================
-// FUNGSI CRUD (dengan auto-update default)
-// =====================================================
-
-function addItemData(name, value, unit) {
-    const newItem = {
-        id: inventoryData.nextId++,
-        name: name.trim(),
-        value: parseInt(value, 10),
-        unit: unit || 'Unit',
-        isOut: false
-    };
-    inventoryData.items.push(newItem);
-    saveDataToStorage(inventoryData);
-    updateDefaultData(); // ← Auto-update default
-    updateStatusBar(`✅ "${name}" berhasil ditambahkan`);
-    return newItem;
-}
-
-function updateItemData(id, updatedData) {
-    const index = inventoryData.items.findIndex(item => item.id === id);
-    if (index !== -1) {
-        inventoryData.items[index] = {
-            ...inventoryData.items[index],
-            ...updatedData
-        };
-        saveDataToStorage(inventoryData);
-        updateDefaultData(); // ← Auto-update default
-        updateStatusBar('✅ Data berhasil diupdate');
-        return true;
-    }
-    return false;
-}
-
-function deleteItemData(id) {
-    const initialLength = inventoryData.items.length;
-    inventoryData.items = inventoryData.items.filter(item => item.id !== id);
-    if (inventoryData.items.length < initialLength) {
-        saveDataToStorage(inventoryData);
-        updateDefaultData(); // ← Auto-update default
-        updateStatusBar('✅ Barang berhasil dihapus');
-        return true;
-    }
-    return false;
-}
-
-function toggleItemStatus(id) {
-    const item = getItemById(id);
-    if (item) {
-        item.isOut = !item.isOut;
-        saveDataToStorage(inventoryData);
-        updateDefaultData(); // ← Auto-update default
-        updateStatusBar('✅ Status berhasil diubah');
-        return true;
-    }
-    return false;
-}
-
-// =====================================================
-// RESET KE DEFAULT (dengan data terbaru)
-// =====================================================
-function resetToDefaultData() {
-    if (!confirm('Reset semua data ke default?')) return;
-    
-    // Ambil default data terbaru dari localStorage
-    inventoryData = getDefaultData();
-    saveDataToStorage(inventoryData);
-    renderTable();
-    updateStatusBar('✅ Data berhasil direset ke default');
-}
-
-// =====================================================
-// TAMBAH TOMBOL UPDATE DEFAULT (Opsional)
-// =====================================================
-function addDataManagementButtons() {
-    const container = document.querySelector('.bg-white.shadow-sm.rounded-xl.p-6.border.border-slate-100:last-child');
-    if (!container) return;
-
-    if (document.getElementById('dataManagementButtons')) return;
-
-    const buttonContainer = document.createElement('div');
-    buttonContainer.id = 'dataManagementButtons';
-    buttonContainer.className = 'mt-4 flex flex-wrap gap-2';
-    buttonContainer.innerHTML = `
-        <button onclick="exportData()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
-            <i class="fa-solid fa-download"></i> Backup Data
-        </button>
-        <label class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-upload"></i> Restore Data
-            <input type="file" accept=".json" onchange="importData(event)" class="hidden">
-        </label>
-        <button onclick="updateDefaultData()" class="bg-purple-600 hover:bg-purple-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2" title="Simpan data saat ini sebagai default">
-            <i class="fa-solid fa-bookmark"></i> Simpan sebagai Default
-        </button>
-        <button onclick="resetToDefaultData()" class="bg-orange-500 hover:bg-orange-600 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
-            <i class="fa-solid fa-rotate"></i> Reset Default
-        </button>
-        <button onclick="if(confirm('Hapus semua data?')){inventoryData={items:[],nextId:1};saveDataToStorage(inventoryData);updateDefaultData();renderTable();updateStatusBar('✅ Semua data dihapus');}" class="bg-rose-600 hover:bg-rose-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
-            <i class="fa-solid fa-trash"></i> Hapus Semua
-        </button>
-    `;
-    container.appendChild(buttonContainer);
-}
-
-// =====================================================
 // VARIABEL GLOBAL
 // =====================================================
 let inventoryData = loadDataFromStorage();
 
 // =====================================================
-// FUNGSI CRUD (dengan auto-save)
+// FUNGSI CRUD (dengan auto-save & auto-update default)
 // =====================================================
 
 function getItems() {
@@ -258,6 +135,7 @@ function addItemData(name, value, unit) {
     };
     inventoryData.items.push(newItem);
     saveDataToStorage(inventoryData);
+    updateDefaultData(); // Auto-update default
     updateStatusBar(`✅ "${name}" berhasil ditambahkan`);
     return newItem;
 }
@@ -270,6 +148,7 @@ function updateItemData(id, updatedData) {
             ...updatedData
         };
         saveDataToStorage(inventoryData);
+        updateDefaultData(); // Auto-update default
         updateStatusBar('✅ Data berhasil diupdate');
         return true;
     }
@@ -281,6 +160,7 @@ function deleteItemData(id) {
     inventoryData.items = inventoryData.items.filter(item => item.id !== id);
     if (inventoryData.items.length < initialLength) {
         saveDataToStorage(inventoryData);
+        updateDefaultData(); // Auto-update default
         updateStatusBar('✅ Barang berhasil dihapus');
         return true;
     }
@@ -292,6 +172,7 @@ function toggleItemStatus(id) {
     if (item) {
         item.isOut = !item.isOut;
         saveDataToStorage(inventoryData);
+        updateDefaultData(); // Auto-update default
         updateStatusBar('✅ Status berhasil diubah');
         return true;
     }
@@ -306,8 +187,13 @@ function getAvailableItems() {
     return inventoryData.items.filter(item => !item.isOut);
 }
 
+// =====================================================
+// RESET KE DEFAULT
+// =====================================================
 function resetToDefaultData() {
     if (!confirm('Reset semua data ke default?')) return;
+    
+    // Ambil default data terbaru dari localStorage
     inventoryData = getDefaultData();
     saveDataToStorage(inventoryData);
     renderTable();
@@ -465,20 +351,10 @@ function editItem(id) {
 }
 
 // =====================================================
-// HAPUS BARANG (LANGSUNG TANPA KONFIRMASI)
-// =====================================================
-function deleteItem(id) {
-    if (deleteItemData(id)) {
-        renderTable();
-        updateStatusBar(`✅ Barang berhasil dihapus`);
-    }
-}
-
-// =====================================================
 // VARIABEL UNTUK UNDO DELETE
 // =====================================================
-let deletedItemHistory = null; // Menyimpan data yang dihapus
-let undoTimeout = null; // Timeout untuk menghilangkan tombol undo
+let deletedItemHistory = null;
+let undoTimeout = null;
 
 // =====================================================
 // FUNGSI DELETE DENGAN UNDO
@@ -499,6 +375,7 @@ function deleteItem(id) {
     
     if (inventoryData.items.length < initialLength) {
         saveDataToStorage(inventoryData);
+        updateDefaultData(); // Auto-update default
         renderTable();
         
         // Tampilkan notifikasi dengan tombol undo
@@ -529,6 +406,7 @@ function undoDelete() {
     }
     
     saveDataToStorage(inventoryData);
+    updateDefaultData(); // Auto-update default
     renderTable();
     
     // Reset history
@@ -747,18 +625,12 @@ function escapeHtml(text) {
 }
 
 // =====================================================
-// INISIALISASI
+// TAMBAH TOMBOL MANAJEMEN DATA
 // =====================================================
-document.addEventListener('DOMContentLoaded', function() {
-    renderTable();
-    addDataManagementButtons();
-});
-
 function addDataManagementButtons() {
     const container = document.querySelector('.bg-white.shadow-sm.rounded-xl.p-6.border.border-slate-100:last-child');
     if (!container) return;
 
-    // Cek apakah tombol sudah ada
     if (document.getElementById('dataManagementButtons')) return;
 
     const buttonContainer = document.createElement('div');
@@ -772,12 +644,23 @@ function addDataManagementButtons() {
             <i class="fa-solid fa-upload"></i> Restore Data
             <input type="file" accept=".json" onchange="importData(event)" class="hidden">
         </label>
+        <button onclick="updateDefaultData()" class="bg-purple-600 hover:bg-purple-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2" title="Simpan data saat ini sebagai default">
+            <i class="fa-solid fa-bookmark"></i> Simpan sebagai Default
+        </button>
         <button onclick="resetToDefaultData()" class="bg-orange-500 hover:bg-orange-600 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
             <i class="fa-solid fa-rotate"></i> Reset Default
         </button>
-        <button onclick="if(confirm('Hapus semua data?')){inventoryData={items:[],nextId:1};saveDataToStorage(inventoryData);renderTable();updateStatusBar('✅ Semua data dihapus');}" class="bg-rose-600 hover:bg-rose-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
+        <button onclick="if(confirm('Hapus semua data?')){inventoryData={items:[],nextId:1};saveDataToStorage(inventoryData);updateDefaultData();renderTable();updateStatusBar('✅ Semua data dihapus');}" class="bg-rose-600 hover:bg-rose-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
             <i class="fa-solid fa-trash"></i> Hapus Semua
         </button>
     `;
     container.appendChild(buttonContainer);
 }
+
+// =====================================================
+// INISIALISASI
+// =====================================================
+document.addEventListener('DOMContentLoaded', function() {
+    renderTable();
+    addDataManagementButtons();
+});
