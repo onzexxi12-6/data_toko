@@ -17,10 +17,16 @@ function loadDataFromStorage() {
                 return data;
             }
         }
-        return { items: [], nextId: 1 };
+        return {
+            items: [],
+            nextId: 1
+        };
     } catch (error) {
         console.error('Error loading data:', error);
-        return { items: [], nextId: 1 };
+        return {
+            items: [],
+            nextId: 1
+        };
     }
 }
 
@@ -51,7 +57,9 @@ function escapeHtml(text) {
         '"': '&quot;',
         "'": '&#039;'
     };
-    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    return text.replace(/[&<>"']/g, function(m) {
+        return map[m];
+    });
 }
 
 // =====================================================
@@ -88,6 +96,26 @@ function getSizeStyles() {
             badge: 'padding: 1px 6px; font-size: 7px;',
             footer: 'font-size: 7px; padding-top: 5px; margin-top: 8px;',
             pageInfo: 'font-size: 6px;'
+        },
+        'ultra-compact': {
+            container: 'padding: 6px; font-size: 7px;',
+            header: 'font-size: 11px; padding-bottom: 3px; margin-bottom: 5px;',
+            date: 'font-size: 6px;',
+            th: 'padding: 2px 3px; font-size: 8px;',
+            td: 'padding: 2px 3px; font-size: 8px;',
+            badge: 'padding: 1px 4px; font-size: 6px;',
+            footer: 'font-size: 6px; padding-top: 3px; margin-top: 5px;',
+            pageInfo: 'font-size: 5px;'
+        },
+        'super-compact': {
+            container: 'padding: 4px; font-size: 6px;',
+            header: 'font-size: 10px; padding-bottom: 2px; margin-bottom: 4px;',
+            date: 'font-size: 5px;',
+            th: 'padding: 1px 2px; font-size: 8px;',
+            td: 'padding: 1px 2px; font-size: 8px;',
+            badge: 'padding: 1px 3px; font-size: 5px;',
+            footer: 'font-size: 5px; padding-top: 2px; margin-top: 4px;',
+            pageInfo: 'font-size: 4px;'
         }
     };
     return sizes[currentSize] || sizes['compact'];
@@ -100,61 +128,76 @@ function generatePDFContent(items, page, totalPages, style) {
     const now = new Date();
     const dateStr = now.toLocaleDateString('id-ID') + ' ' + now.toLocaleTimeString('id-ID');
     const start = (page - 1) * 20;
-    
+
     let html = `
         <div style="${style.container}">
-            <div style="text-align: center; border-bottom: 2px solid #cbd5e1; ${style.header}">
-                <h2 style="margin: 0; font-weight: bold; color: #0f172a; ${style.header}">DAFTAR BARANG YANG AKAN DIPESAN</h2>
-                <p style="margin: 3px 0 0 0; color: #64748b; ${style.date}">
+            <div style="text-align:center;border-bottom: none;${style.header}">
+                <h2 style="margin:0;font-weight:bold;color:#0f172a;${style.header}">
+                    DAFTAR BARANG YANG AKAN DIPESAN
+                </h2>
+
+                <p style="margin:3px 0 0 0;color:#64748b;${style.date}">
                     Tanggal: ${dateStr}
                 </p>
-                <p style="margin: 2px 0 0 0; color: #94a3b8; ${style.pageInfo}">
+
+                <p style="margin:2px 0 0 0;color:#94a3b8;${style.pageInfo}">
                     Halaman ${page} dari ${totalPages} | Total ${items.length} item
                 </p>
             </div>
-            
-            <table style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr style="background-color: #f1f5f9;">
-                        <th style="padding: ${style.th}; text-align: center; border: 1px solid #cbd5e1; width: 8%;">No</th>
-                        <th style="padding: ${style.th}; text-align: left; border: 1px solid #cbd5e1; width: 55%;">Nama Barang</th>
-                        <th style="padding: ${style.th}; text-align: center; border: 1px solid #cbd5e1; width: 37%;">Jumlah</th>
-                    </tr>
-                </thead>
-                <tbody>
+
+            <div style="width:80%;margin:0 auto;">
+
+                <table style="width:100%;border-collapse:collapse;">
+                    <thead>
+                        <tr style="background:#f1f5f9;">
+                            <th style="padding:${style.th};text-align:center;border:1px solid #cbd5e1;width:8%;">No</th>
+                            <th style="padding:${style.th};text-align:left;border:1px solid #cbd5e1;width:22%;">Nama Barang</th>
+                            <th style="padding:${style.th};text-align:center;border:1px solid #cbd5e1;width:15%;">Jumlah</th>
+                            <th style="padding:${style.th};text-align:center;border:1px solid #cbd5e1;width:55%;">Harga</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
     `;
 
     items.forEach((item, index) => {
         const nomor = start + index + 1;
+
         html += `
             <tr>
-                <td style="padding: ${style.td}; border: 1px solid #cbd5e1; text-align: center; font-weight: 500;">${nomor}</td>
-                <td style="padding: ${style.td}; border: 1px solid #cbd5e1;">
-                    <strong>${escapeHtml(item.name)}</strong>
+                <td style="padding:${style.td};border:1px solid #cbd5e1;text-align:center;">
+                    ${nomor}
                 </td>
-                <td style="padding: ${style.td}; border: 1px solid #cbd5e1; text-align: center;">
-                    <span style="background: #dbeafe; color: #1e40af; padding: ${style.badge}; border-radius: 6px; font-weight: 600;">
-                        ${item.orderQty} ${item.unit || 'Unit'}
-                    </span>
+
+                <td style="padding:${style.td};border:1px solid #cbd5e1;">
+                    ${escapeHtml(item.name)}
+                </td>
+
+                <td style="padding:${style.td};border:1px solid #cbd5e1;text-align:center;">
+                    ${item.orderQty} ${item.unit || 'Unit'}
+                </td>
+
+                <td style="padding:${style.td};border:1px solid #cbd5e1;">
+                    &nbsp;
                 </td>
             </tr>
         `;
     });
 
     html += `
-                </tbody>
-            </table>
-            
-            <div style="border-top: 1px solid #e2e8f0; text-align: center; color: #94a3b8; ${style.footer}">
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div style="border-top none;text-align:center;color:#94a3b8;${style.footer}">
                 <p>Dicetak pada: ${dateStr}</p>
-                <p style="margin-top: 3px;">Mohon segera dilakukan pemesanan untuk barang-barang di atas.</p>
             </div>
         </div>
     `;
 
     return html;
 }
-
 // =====================================================
 // RENDER PREVIEW
 // =====================================================
@@ -166,7 +209,10 @@ function renderPreview() {
     // Ambil data dengan quantity hasil edit
     const editedItems = outItems.map(item => {
         const qty = editQuantities[item.id] !== undefined ? editQuantities[item.id] : item.value;
-        return { ...item, orderQty: qty };
+        return {
+            ...item,
+            orderQty: qty
+        };
     });
 
     // Filter item dengan quantity > 0
@@ -185,9 +231,9 @@ function renderPreview() {
 
     // Update info
     document.getElementById('pageInfo').textContent = `${currentPage} / ${totalPages}`;
-    document.getElementById('pageDetail').textContent = 
+    document.getElementById('pageDetail').textContent =
         totalItems > 0 ? `Menampilkan ${start + 1} - ${end} dari ${totalItems} item` : 'Tidak ada data';
-    
+
     document.getElementById('prevBtn').disabled = currentPage <= 1;
     document.getElementById('nextBtn').disabled = currentPage >= totalPages;
 
@@ -219,11 +265,14 @@ function nextPage() {
     const outItems = getOutOfStockItems();
     const editedItems = outItems.map(item => {
         const qty = editQuantities[item.id] !== undefined ? editQuantities[item.id] : item.value;
-        return { ...item, orderQty: qty };
+        return {
+            ...item,
+            orderQty: qty
+        };
     });
     const filteredItems = editedItems.filter(item => item.orderQty > 0);
     const totalPages = Math.ceil(filteredItems.length / 15) || 1;
-    
+
     if (currentPage < totalPages) {
         currentPage++;
         renderPreview();
@@ -242,7 +291,7 @@ function updatePreview() {
 function renderEditTable() {
     const outItems = getOutOfStockItems();
     const tbody = document.getElementById('editTableBody');
-    
+
     if (!tbody) return;
 
     // Inisialisasi editQuantities jika kosong
@@ -255,10 +304,10 @@ function renderEditTable() {
     // Update total
     document.getElementById('editTotalItems').textContent = outItems.length;
     document.getElementById('editTotalItems2').textContent = outItems.length;
-    
+
     // Update tanggal
     const now = new Date();
-    document.getElementById('editDateDisplay').textContent = 
+    document.getElementById('editDateDisplay').textContent =
         now.toLocaleDateString('id-ID') + ' ' + now.toLocaleTimeString('id-ID');
 
     if (outItems.length === 0) {
@@ -277,7 +326,7 @@ function renderEditTable() {
     tbody.innerHTML = outItems.map((item, index) => {
         const qty = editQuantities[item.id] !== undefined ? editQuantities[item.id] : item.value;
         const isChanged = qty !== item.value;
-        
+
         return `
             <tr>
                 <td class="text-center font-medium text-slate-500">${index + 1}</td>
@@ -311,7 +360,7 @@ function renderEditTable() {
             </tr>
         `;
     }).join('');
-    
+
     renderPreview();
 }
 
@@ -322,12 +371,12 @@ function renderEditTable() {
 function adjustQuantity(id, delta) {
     const input = document.getElementById(`editQty_${id}`);
     if (!input) return;
-    
+
     let currentValue = parseInt(input.value, 10) || 0;
     let newValue = Math.max(0, currentValue + delta);
     input.value = newValue;
     editQuantities[id] = newValue;
-    
+
     updateBadgeDisplay(id);
     renderPreview();
 }
@@ -335,14 +384,14 @@ function adjustQuantity(id, delta) {
 function updateQuantityFromInput(id) {
     const input = document.getElementById(`editQty_${id}`);
     if (!input) return;
-    
+
     let value = parseInt(input.value, 10);
     if (isNaN(value) || value < 0) {
         value = 0;
         input.value = 0;
     }
     editQuantities[id] = value;
-    
+
     updateBadgeDisplay(id);
     renderPreview();
 }
@@ -350,7 +399,7 @@ function updateQuantityFromInput(id) {
 function updateBadgeDisplay(id) {
     const item = getItemById(id);
     if (!item) return;
-    
+
     const row = document.getElementById(`editQty_${id}`)?.closest('tr');
     if (row) {
         const badge = row.querySelector('.current-stock-badge');
@@ -358,10 +407,10 @@ function updateBadgeDisplay(id) {
         if (badge) {
             const qty = editQuantities[id] !== undefined ? editQuantities[id] : item.value;
             const isChanged = qty !== item.value;
-            
+
             badge.textContent = `${item.value} ${item.unit || 'Unit'}`;
             badge.className = `current-stock-badge ${isChanged ? 'changed' : ''}`;
-            
+
             if (isChanged) {
                 if (!changedText) {
                     const span = document.createElement('span');
@@ -392,15 +441,12 @@ function resetEditQuantities() {
     showStatusBar('↩️ Jumlah direset ke stok awal');
 }
 
-// =====================================================
-// EXPORT PDF (Menggunakan style yang sama dengan preview)
-// =====================================================
 // EXPORT PDF (Menggunakan style yang sama dengan preview)
 // =====================================================
 
 function exportEditedPDF() {
     const outItems = getOutOfStockItems();
-    
+
     if (outItems.length === 0) {
         alert('Tidak ada barang dengan status "Habis" untuk diekspor.');
         return;
@@ -417,7 +463,7 @@ function exportEditedPDF() {
 
     // Filter item dengan quantity > 0
     const filteredItems = editedItems.filter(item => item.orderQty > 0);
-    
+
     if (filteredItems.length === 0) {
         alert('Tidak ada barang dengan jumlah pesanan > 0. Silakan atur jumlah terlebih dahulu.');
         return;
@@ -428,7 +474,7 @@ function exportEditedPDF() {
     const itemsPerPage = 20;
     const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
     const pdfContent = document.getElementById('pdfContent');
-    
+
     if (!pdfContent) {
         alert('Terjadi kesalahan. Silakan refresh halaman.');
         return;
@@ -439,7 +485,7 @@ function exportEditedPDF() {
         const start = (page - 1) * itemsPerPage;
         const end = Math.min(start + itemsPerPage, filteredItems.length);
         const pageItems = filteredItems.slice(start, end);
-        
+
         // Generate konten dengan fungsi yang sama
         const htmlContent = generatePDFContent(pageItems, page, totalPages, style);
         pdfContent.innerHTML = htmlContent;
@@ -449,7 +495,7 @@ function exportEditedPDF() {
     function downloadPage(page) {
         return new Promise((resolve, reject) => {
             renderPDFPage(page);
-            
+
             const container = document.getElementById('pdfTemplateContainer');
             container.style.display = 'block';
             container.style.position = 'absolute';
@@ -460,27 +506,32 @@ function exportEditedPDF() {
             container.style.zIndex = '9999';
             container.style.padding = '0';
             container.style.margin = '0';
-            
+
             // Beri waktu untuk render
             setTimeout(() => {
                 const opt = {
                     margin: [0.4, 0.4, 0.4, 0.4],
                     filename: `daftar_pesanan_barang_${new Date().toISOString().slice(0,10)}_halaman_${page}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { 
-                        scale: 2, 
+                    image: {
+                        type: 'jpeg',
+                        quality: 0.98
+                    },
+                    html2canvas: {
+                        scale: 3,
                         letterRendering: true,
                         useCORS: true,
                         logging: false,
                         width: 794,
                         height: 1123
                     },
-                    jsPDF: { 
-                        unit: 'in', 
-                        format: 'a4', 
-                        orientation: 'portrait' 
+                    jsPDF: {
+                        unit: 'in',
+                        format: 'a4',
+                        orientation: 'portrait'
                     },
-                    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                    pagebreak: {
+                        mode: ['avoid-all', 'css', 'legacy']
+                    }
                 };
 
                 html2pdf()
@@ -503,7 +554,7 @@ function exportEditedPDF() {
     async function generateAllPages() {
         try {
             const pdfBlobs = [];
-            
+
             for (let i = 1; i <= totalPages; i++) {
                 const blob = await downloadPage(i);
                 pdfBlobs.push(blob);
@@ -552,10 +603,10 @@ function showStatusBar(message) {
         statusBar.id = 'statusBar';
         document.body.appendChild(statusBar);
     }
-    
+
     statusBar.textContent = message;
     statusBar.className = 'show';
-    
+
     clearTimeout(statusBar._timeout);
     statusBar._timeout = setTimeout(() => {
         statusBar.className = '';
@@ -599,7 +650,7 @@ document.addEventListener('DOMContentLoaded', function() {
         renderEditTable();
         renderPreview();
     }
-    
+
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             window.location.href = 'index.html';

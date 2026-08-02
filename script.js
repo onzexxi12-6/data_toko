@@ -556,18 +556,24 @@ function exportToPDF() {
 
     // Tabel hanya menampilkan Nama Barang dan Jumlah (tanpa Status)
     tbody.innerHTML = outItems.map((item, idx) => `
-        <tr>
-            <td style="padding: 10px; border: 1px solid #cbd5e1; text-align: center; font-weight: 500;">${idx + 1}</td>
-            <td style="padding: 10px; border: 1px solid #cbd5e1;">
-                <strong>${escapeHtml(item.name)}</strong>
-            </td>
-            <td style="padding: 10px; border: 1px solid #cbd5e1; text-align: center;">
-                <span style="background: transparent; color: #1e40af; padding: 4px 12px; border-radius: 6px; font-weight: 600;">
-                    ${item.value} ${item.unit || 'Unit'}
-                </span>
-            </td>
-        </tr>
-    `).join('');
+<tr>
+    <td style="padding:10px;border:1px solid #cbd5e1;text-align:center;">
+        ${idx + 1}
+    </td>
+
+    <td style="padding:10px;border:1px solid #cbd5e1;">
+        ${escapeHtml(item.name)}
+    </td>
+
+    <td style="padding:10px;border:1px solid #cbd5e1;text-align:center;">
+        ${item.value} ${item.unit || 'Unit'}
+    </td>
+
+    <td style="padding:10px;border:1px solid #cbd5e1;text-align:right;">
+        ${formatRupiah(item.price)}
+    </td>
+</tr>
+`).join('');
 
     // Tampilkan container sementara untuk capture
     const container = document.getElementById('pdfTemplateContainer');
