@@ -775,12 +775,12 @@
         });
         
         document.getElementById('clearAllBtn').addEventListener('click', () => {
-          if (confirm('Hapus semua data barang?')) {
-            pushUndo();
-            items = [];
-            saveToStorage();
-            updateUI();
-          }
+          <!-- if (confirm('Hapus semua data barang?')) { -->
+        pushUndo();
+        items = [];
+        saveToStorage();
+        updateUI();
+          <!-- } -->
         });
         
         // ----- Clear Export (kosongkan semua barang habis) -----
